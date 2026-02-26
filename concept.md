@@ -54,15 +54,16 @@ This component provides an integrated development environment (IDE) experience f
     - On save, the backend validates the script.
     - The backend will return an error if the saved content is identical to the previous version or matches another existing script.
 
-**Rendering Strategy Note**: The architectural decision of whether this component will be rendered
-on the client (CSR) or on the server (SSR) is still under consideration.
-While integrating a Python Language Server Protocol (LSP) might suggest a server-side approach,
-modern client-side solutions exist that can run an LSP in-browser using Web Workers and WebAssembly.
-The final implementation will depend on performance and complexity trade-offs.
+**Scripting language LSP Note**: Backend runs Python Language Server, Frontend connects via WebSocket.
+This way the client has true environment-aware autocomplete, and installed package awareness.
+
+- **Implementation Note**: This architecture requires two key components.
+    - **Frontend**: A library such as `monaco-languageclient` will be used to connect the editor instance to the backend WebSocket.
+    - **Backend**: The FastAPI application must manage a stateful WebSocket endpoint. This endpoint will be responsible for spawning and managing the lifecycle of a dedicated LSP process (e.g., `pylsp`, `pyright-langserver`) for each active user session.
 
 ## 3. Backend Architecture
 
-The backend is a FastAPI application responsible for business logic, script execution, and serving the frontend.
+The backend is primarily a FastAPI application responsible for business logic, script execution, and serving the frontend.
 
 ### 3.1. Script and Version Management
 - The backend maintains a version control system for all scripts, storing every version as an immutable snapshot, conceptually similar to Git.
@@ -79,8 +80,12 @@ The backend is a FastAPI application responsible for business logic, script exec
 
 ### 3.3. LLM and API Services
 - **LLM Integration**: The backend exposes an endpoint that receives user prompts from the frontend. It logs, validates and preprocesses these prompts before forwarding them to an LLM provider (e.g., via OpenRouter). It will handle any tool-use requests from the LLM and manage API-related metrics like cost and performance.
-- Backend refuses to forward suspiciously looking code or prompt to LLM, in order to prevent data leaks and attacks on LLM. For starters the filtering will be based on stop-word list, and package/function/variable name rewriting rules.
+- **LLM Guardrails**: The backend refuses to forward suspiciously looking code or prompts to the LLM in order to prevent data leaks and attacks on the LLM. For starters, the filtering will be based on a stop-word list and package/function/variable name rewriting rules.
 - **Static File Serving**: The FastAPI application serves the compiled static assets (HTML, JS, CSS) of the React frontend.
+
+- **Implementation Note**: The LLM Guardrails feature has significant complexity.
+    - **Stop-word filtering** is simple to implement but may be ineffective or overly restrictive, requiring careful tuning.
+    - **Name rewriting** is a more robust approach but is non-trivial. A simple text replacement is brittle and likely to break code. A reliable implementation will require parsing the code into an Abstract Syntax Tree (AST) to intelligently identify and pseudonymize sensitive identifiers.
 
 ### 3.4. Authentication and Authorization
 - **Roles**: Two user roles are defined: `viewer` and `editor`.
