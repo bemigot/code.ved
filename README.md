@@ -16,7 +16,7 @@ A web application for creating, versioning, and running Python scripts — augme
 
 - [x] Step 1 — Scaffolding & tooling (frontend/backend bootstrapped, scripts_repo initialized)
 - [x] Step 2 — Database schema (SQLModel)
-- [ ] Step 3 — Git store (GitPython)
+- [x] Step 3 — Git store (GitPython)
 - [ ] Step 4 — Auth (session cookie, 2 hardcoded users)
 - [ ] Step 5 — Script management REST API
 - [ ] Step 6 — Docker execution sandbox
