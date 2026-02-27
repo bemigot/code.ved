@@ -24,7 +24,7 @@ A web application for creating, versioning, and running Python scripts with LLM'
 - [x] Step 8 - Frontend foundation (routing, auth context)
 - [x] Step 9 - Script catalog UI
 - [x] Step 10 - Script editor UI (Monaco - ~Pyright worker~)
-- [ ] Step 11 - Static file serving
+- [x] Step 11 - Static file serving (production)
 - [ ] Step 12 - Testing & stabilization
 
 ## Prerequisites
@@ -55,3 +55,17 @@ npm run dev
 ```
 
 Open `http://localhost:5173`. Login as `ed1` / `1editor` (editor) or `mo1` / `2viewer` (viewer).
+
+## Production setup
+
+```bash
+# Build the frontend once (or after any frontend changes)
+cd frontend
+npm run build
+
+# Run the backend — it detects frontend/dist/ and serves it at /
+cd ../backend
+uv run uvicorn app.main:app
+```
+
+Open `http://localhost:8000`. No Vite process needed.

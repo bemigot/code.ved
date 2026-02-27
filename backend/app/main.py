@@ -3,9 +3,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
+from starlette.staticfiles import StaticFiles
 
 from .auth import SESSION_SECRET_KEY, router as auth_router
 from .db import create_db_and_tables
@@ -13,6 +15,8 @@ from .git_store import init_repo
 from .routes.execution import router as execution_router
 from .routes.llm import router as llm_router
 from .routes.scripts import router as scripts_router
+
+FRONTEND_DIST = Path(__file__).parent.parent.parent / "frontend" / "dist"
 
 
 @asynccontextmanager
@@ -30,3 +34,7 @@ app.include_router(auth_router)
 app.include_router(scripts_router)
 app.include_router(execution_router)
 app.include_router(llm_router)
+
+# Serve the React build for production (skipped if not yet built)
+if FRONTEND_DIST.is_dir():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="static")
