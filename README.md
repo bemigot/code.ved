@@ -22,7 +22,7 @@ A web application for creating, versioning, and running Python scripts with LLM'
 - [x] Step 6 - Docker execution sandbox
 - [x] Step 7 - LLM proxy (OpenRouter)
 - [x] Step 8 - Frontend foundation (routing, auth context)
-- [ ] Step 9 - Script catalog UI
+- [x] Step 9 - Script catalog UI
 - [ ] Step 10 - Script editor UI (Monaco + Pyright worker)
 - [ ] Step 11 - Static file serving
 - [ ] Step 12 - Testing & stabilization
