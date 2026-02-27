@@ -20,7 +20,7 @@ A web application for creating, versioning, and running Python scripts — augme
 - [x] Step 4 — Auth (session cookie, 2 hardcoded users)
 - [x] Step 5 — Script management REST API
 - [x] Step 6 — Docker execution sandbox
-- [ ] Step 7 — LLM proxy (OpenRouter)
+- [x] Step 7 — LLM proxy (OpenRouter)
 - [ ] Step 8 — Frontend foundation (routing, auth context)
 - [ ] Step 9 — Script catalog UI
 - [ ] Step 10 — Script editor UI (Monaco + Pyright worker)
