@@ -25,7 +25,7 @@ A web application for creating, versioning, and running Python scripts with LLM'
 - [x] Step 9 - Script catalog UI
 - [x] Step 10 - Script editor UI (Monaco - ~Pyright worker~)
 - [x] Step 11 - Static file serving (production)
-- [ ] Step 12 - Testing & stabilization
+- [x] Step 12 - Testing & stabilization (67 tests)
 
 ## Prerequisites
 
@@ -69,3 +69,14 @@ uv run uvicorn app.main:app
 ```
 
 Open `http://localhost:8000`. No Vite process needed.
+
+## Running tests
+
+```bash
+cd backend
+uv run pytest          # run all 67 tests
+uv run pytest -v       # verbose (show each test name)
+uv run pytest tests/test_auth.py   # single file
+```
+
+Tests use an isolated in-memory SQLite database and a temporary git repo — no running services required.
