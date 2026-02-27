@@ -10,6 +10,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from .auth import SESSION_SECRET_KEY, router as auth_router
 from .db import create_db_and_tables
 from .git_store import init_repo
+from .routes.scripts import router as scripts_router
 
 
 @asynccontextmanager
@@ -24,3 +25,4 @@ app = FastAPI(lifespan=lifespan)
 app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY, session_cookie="ved_session")
 
 app.include_router(auth_router)
+app.include_router(scripts_router)

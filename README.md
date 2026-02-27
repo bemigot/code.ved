@@ -18,7 +18,7 @@ A web application for creating, versioning, and running Python scripts — augme
 - [x] Step 2 — Database schema (SQLModel)
 - [x] Step 3 — Git store (GitPython)
 - [x] Step 4 — Auth (session cookie, 2 hardcoded users)
-- [ ] Step 5 — Script management REST API
+- [x] Step 5 — Script management REST API
 - [ ] Step 6 — Docker execution sandbox
 - [ ] Step 7 — LLM proxy (OpenRouter)
 - [ ] Step 8 — Frontend foundation (routing, auth context)
