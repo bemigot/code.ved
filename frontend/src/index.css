@@ -13,45 +13,113 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2em;
   line-height: 1.1;
+  margin: 0 0 1rem;
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  padding: 0.5em 1em;
+  font-size: 0.9em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.2s;
 }
 button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 0.5em 0.75em;
+  font-size: 1em;
+  font-family: inherit;
+  color: inherit;
+  background-color: #1a1a1a;
+  border: 1px solid #555;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+input:focus {
+  outline: 2px solid #646cff;
+  border-color: transparent;
+}
+
+/* Login page */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 320px;
+  padding: 2rem;
+}
+
+.login-form button {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.login-error {
+  color: #f87171;
+  margin: 0 0 0.75rem;
+  font-size: 0.9em;
+}
+
+/* Catalog page */
+.catalog-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.catalog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.catalog-header h1 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.catalog-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.catalog-username {
+  font-size: 0.9em;
+  color: #888;
 }
 
 @media (prefers-color-scheme: light) {
@@ -59,10 +127,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
-  }
   button {
     background-color: #f9f9f9;
+  }
+  input {
+    background-color: #f9f9f9;
+    border-color: #ccc;
   }
 }

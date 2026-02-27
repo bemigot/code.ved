@@ -21,7 +21,7 @@ A web application for creating, versioning, and running Python scripts with LLM'
 - [x] Step 5 - Script management REST API
 - [x] Step 6 - Docker execution sandbox
 - [x] Step 7 - LLM proxy (OpenRouter)
-- [ ] Step 8 - Frontend foundation (routing, auth context)
+- [x] Step 8 - Frontend foundation (routing, auth context)
 - [ ] Step 9 - Script catalog UI
 - [ ] Step 10 - Script editor UI (Monaco + Pyright worker)
 - [ ] Step 11 - Static file serving
