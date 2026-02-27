@@ -1,1 +1,10 @@
 /.idea/
+node_modules/
+dist/
+backend/scripts_repo/
+backend/data.db
+__pycache__/
+.venv/
+*.pyc
+backend/.env
+
