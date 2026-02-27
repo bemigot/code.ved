@@ -15,7 +15,7 @@ A web application for creating, versioning, and running Python scripts — augme
 **Phase 1 — in progress**
 
 - [x] Step 1 — Scaffolding & tooling (frontend/backend bootstrapped, scripts_repo initialized)
-- [ ] Step 2 — Database schema (SQLModel)
+- [x] Step 2 — Database schema (SQLModel)
 - [ ] Step 3 — Git store (GitPython)
 - [ ] Step 4 — Auth (session cookie, 2 hardcoded users)
 - [ ] Step 5 — Script management REST API
@@ -43,7 +43,7 @@ Python 3.13 is managed automatically by `uv`; no separate install needed.
 ## Dev setup (once Phase 1 is complete)
 
 ```bash
-# Terminal 1 — backend - DON'T RUN YET (after Step 1)
+# Terminal 1 — backend
 cd backend
 uv run uvicorn app.main:app --reload
 
