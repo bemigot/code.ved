@@ -27,7 +27,7 @@ This component serves as the main dashboard for viewing and managing scripts.
 
 - **Functionality**:
     - Displays a list of all managed Python scripts.
-    - Scripts are assigned a unique numeric `ordering_number` (e.g., `5.33`). The backend hints the next available slot when setting the ordering.
+    - Scripts are assigned a unique numeric `ordering_number` (e.g., `5.33`). Each new script receives the next available integer as its Major number (e.g., the script after the last `3.xx` entry gets `4.0`). Fine-grained reordering logic is deferred to a later stage.
     - Provides a "+" button to open the Script Editor with a new script template.
 - **Script Entry Details**:
     - **Primary Display**: Each script is listed with its `ordering_number` and a `descriptive_name`
@@ -50,12 +50,12 @@ This component provides an integrated development environment (IDE) experience f
     - **LLM Interaction**: An integrated prompt window allows the user to submit natural language
       instructions for code creation/modification to the backend LLM service.
 - **Versioning**:
-    - Users can create a new script based on the current one.
-    - Users can explicitly increment the `Major` version number by one. New scripts start with `Major` 0.
+    - Users can fork the current script. The fork is placed in the editor's personal branch; SQLite records its origin (parent script ID + version).
+    - Users can explicitly increment the `Major` version number by one. New scripts start at version `0.1` on first save.
     - The `Minor` version is automatically incremented by the backend upon saving changes.
 - **Backend Interaction**:
     - On save, the backend validates the script.
-    - The backend may return an error if the saved content is identical to an existing script in the shared repository. This is a desirable restriction for the shared task queue, currently under design.
+    - Duplicate-content detection across the shared queue is deferred to Phase 2.
 
 **Scripting language LSP Note**: Backend runs Python Language Server, Frontend connects via WebSocket.
 This way the client has true environment-aware autocomplete, and installed package awareness.
@@ -69,9 +69,13 @@ This way the client has true environment-aware autocomplete, and installed packa
 The backend is primarily a FastAPI application responsible for business logic, script execution, and serving the frontend.
 
 ### 3.1. Script and Version Management
-- The backend maintains a version control system for all scripts, storing every version as an immutable snapshot, conceptually similar to Git.
-- It tracks script metadata, including version numbers, committer, modification date and time with 0.01 s precision.
-- For each script, the backend stores associated test inputs (e.g., a JSON string).
+- Scripts are stored in a real Git repository. A shared `prod` branch holds the authoritative execution queue; each editor has a personal branch (Phase 1: `ed1` only).
+- A SQLite database stores all metadata: version numbers (`Major.Minor`), committer, timestamps with 0.01 s precision, and fork origin (parent script ID + version) for forked scripts.
+- LLM interactions are logged in SQLite: prompt sent, raw model response, model identifier, and cost metrics — each record linked to the script version it produced.
+- For each script, the backend stores associated test data. At execution time the runner writes this data to a temporary file and passes the path as the first positional argument (see §3.2).
+
+> **Design Note — Duplicate Content Policy (deferred to Phase 2)**
+> The `prod` branch must not contain two distinct scripts whose executable code is identical. "Executable code" excludes comments and docstrings: two versions of the *same* script that differ only in non-executable content are valid and permitted as distinct version history entries. The precise comparison algorithm (e.g., AST-normalised hash) and the enforcement point (pre-merge check, save validation, or a periodic audit) are open questions to be settled in Phase 2.
 
 ### 3.2. Script Execution Engine
 - **Sandbox Environment**: Scripts are executed in an isolated sandbox to ensure security and reproducibility.
@@ -81,16 +85,16 @@ The backend is primarily a FastAPI application responsible for business logic, s
     - The system can run a single script on demand.
     - The system can execute all scripts sequentially based on their `ordering_number`.
     - **Concurrency**: Scripts with the same integer part of their `ordering_number` (e.g., `3.01`, `3.99`) are considered part of the same execution group and may be run concurrently. Groups are executed sequentially (e.g., all `2.xx` scripts complete before any `3.xx` scripts begin).
+    - **Script Input**: Scripts receive data via positional CLI arguments only — no option parsing. The runner writes the test or production dataset to a temporary file and passes the file path as the first positional argument.
 - **Results**: The output of the last successful run and the results of the last full execution pass are persisted.
 
 ### 3.3. LLM and API Services
-- **LLM Integration**: The backend exposes an endpoint that receives user prompts from the frontend. It logs, validates and preprocesses these prompts before forwarding them to an LLM provider (e.g., via OpenRouter). It will handle any tool-use requests from the LLM and manage API-related metrics like cost and performance.
-- **LLM Guardrails**: The backend refuses to forward suspicious-looking code or prompts to the LLM in order to prevent data leaks and attacks on the LLM. For starters, the filtering will be based on a stop-word list and package/function/variable name rewriting rules.
+- **LLM Integration**: The backend exposes an endpoint that receives user prompts from the frontend. It logs, validates, and preprocesses these prompts before forwarding them to **OpenRouter** via `openai.AsyncOpenAI` (configured with OpenRouter's base URL). It handles tool-use requests from the LLM and records cost and latency metrics in SQLite.
+- **LLM Tool Scope**: The LLM may be granted read access to: the active Python interpreter version, installed module signatures, and usage examples. Sensitive identifiers pass through an anonymization pipeline before transmission and are restored afterward. No filesystem access is granted except, optionally, gated read-only access to a designated sandbox directory.
+- **LLM Guardrails**:
+    - **Phase 1**: All prompts and responses are logged. A stop-word filter blocks obviously suspicious content. Simple to implement; requires tuning to avoid false positives.
+    - **Phase 2**: AST-based identifier pseudonymization. The script is parsed into an Abstract Syntax Tree to intelligently rename sensitive identifiers before transmission and restore them afterward. Non-trivial but robust against brittle text-replacement failures.
 - **Static File Serving**: The FastAPI application serves the compiled static assets (HTML, JS, CSS) of the React frontend.
-
-- **Implementation Note**: The LLM Guardrails feature has significant complexity.
-    - **Stop-word filtering** is simple to implement but may be ineffective or overly restrictive, requiring careful tuning.
-    - **Name rewriting** is a more robust approach but is non-trivial. A simple text replacement is brittle and likely to break code. A reliable implementation (Target Phase 2: Advanced stage) will require parsing the code into an Abstract Syntax Tree (AST) to intelligently identify and pseudonymize sensitive identifiers.
 
 ### 3.4. Authentication and Authorization
 - **Roles**: Phase-1: Two user roles are defined: `viewer` and `editor`.

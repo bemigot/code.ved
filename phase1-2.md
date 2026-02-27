@@ -180,7 +180,7 @@ Phase 2 gives:
 ### Critical Migration Consideration
 
 Design Phase 1 so:
-* LSP client abstraction exists (even if local)
+* **LSP**: Isolate all language-intelligence calls behind a `LanguageService` interface (e.g., a React hook or service class). Phase 1 implements it with the browser Pyright Web Worker; Phase 2 swaps in a WebSocket-backed server LSP without touching editor code.
 * Execution API does not assume single interpreter
 * Version model is interpreter-agnostic
 
