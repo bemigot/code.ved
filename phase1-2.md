@@ -4,7 +4,7 @@ with scope boundaries and man-hour estimates.
 Implementor:
 * Senior engineer
 * Strong Python + decent React
-* Not full-time (context switching exists)
+* Not full-time (context switching overhead exists)
 
 ## PHASE 1
 
@@ -40,7 +40,7 @@ React
 ### Scope Definition (Strict)
 
 #### Included
-* Single interpreter (e.g. CPython 3.12)
+* Single interpreter (e.g. CPython 3.14)
 * One Docker image
 * Browser-based language intelligence
 * Script grouping execution logic
