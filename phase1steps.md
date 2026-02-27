@@ -267,12 +267,13 @@ interface LanguageService {
 }
 ```
 
-**Phase 1 implementation** — `PyrightWorkerLanguageService`:
-- Spawn Pyright browser worker (`pyright/dist/pyright.browser.js` as a Web Worker)
-- Use `monaco-languageclient` with a Web Worker message transport to connect Monaco to Pyright worker
-- Surfaces diagnostics (red squiggles) in Monaco
+**Phase 1 implementation** — `NullLanguageService` (no-op):
+- `pyright` npm package v1.1.408 ships Node.js-only bundles; `pyright.browser.js` does not exist.
+- Monaco provides Python syntax highlighting natively (no squiggles for type errors, but tokenisation works).
+- `LanguageService` interface and `useLanguageService` hook are wired in — Phase 2 swaps in the WebSocket-backed server LSP without touching editor code.
+- Phase 2 path: `pyright-langserver` (or `pylsp`) over WebSocket, bridged via `monaco-languageclient`.
 
-Hook: `useLanguageService(editorRef) → LanguageService` — creates worker, configures Monaco markers on change.
+Hook: `useLanguageService() → LanguageService` — returns `nullService` in Phase 1.
 
 **Editor controls panel:**
 - Save (PUT /api/scripts/:id), Fork (POST /api/scripts/:id/fork), Bump Major, Run (POST /api/execute/:id)

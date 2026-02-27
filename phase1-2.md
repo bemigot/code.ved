@@ -77,7 +77,7 @@ Realistic Total: **90–110 hours** That’s ~3 focused weeks.
 ### Risk Profile (Low–Medium)
 
 Main risk areas:
-* Pyright worker wiring
+* ~~Pyright worker wiring~~ — resolved: `pyright` npm package ships Node.js-only bundles; no browser bundle exists at v1.1.408. Phase 1 ships with a `NullLanguageService` (no-op). Monaco provides Python syntax highlighting natively. The `LanguageService` abstraction is in place for Phase 2 swap-in.
 * Versioning correctness
 * Execution group concurrency bugs
 
