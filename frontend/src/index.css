@@ -205,6 +205,341 @@ input:focus {
   font-style: italic;
 }
 
+/* ── Editor page ──────────────────────────────────────────────────────────── */
+
+.editor-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.editor-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 100vh;
+  color: #888;
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+  min-height: 44px;
+}
+
+.editor-back-btn {
+  padding: 0.25em 0.6em;
+  font-size: 1.1em;
+}
+
+.editor-title {
+  font-size: 0.9em;
+  color: #ccc;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.version-badge-btn {
+  font-size: 0.75em;
+  padding: 0.2em 0.55em;
+  background: #333;
+  border-color: #555;
+  color: #aaa;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.version-badge-btn:hover {
+  border-color: #646cff;
+  color: #fff;
+}
+
+.editor-status {
+  font-size: 0.8em;
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+}
+
+.editor-status-ok {
+  background: #14532d;
+  color: #86efac;
+}
+
+.editor-status-err {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+.editor-spacer {
+  flex: 1;
+}
+
+.run-btn {
+  background: #14532d;
+  color: #86efac;
+  border-color: #166534;
+}
+
+.run-btn:hover {
+  border-color: #4ade80;
+}
+
+.run-btn:disabled {
+  background: #1a1a1a;
+  color: #555;
+  border-color: transparent;
+}
+
+.editor-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.editor-pane {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── LLM panel ────────────────────────────────────────────────────────────── */
+
+.llm-panel {
+  width: 300px;
+  flex-shrink: 0;
+  border-left: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.llm-panel-title {
+  font-size: 0.8em;
+  color: #888;
+  padding: 0.5rem 0.75rem 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid #2a2a2a;
+  flex-shrink: 0;
+}
+
+.llm-textarea {
+  flex: 1;
+  min-height: 80px;
+  max-height: 160px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.875em;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  background: #1e1e1e;
+  color: #ccc;
+  border: none;
+  border-bottom: 1px solid #2a2a2a;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.llm-textarea:focus {
+  background: #252525;
+}
+
+.llm-send-btn {
+  flex-shrink: 0;
+  margin: 0.4rem 0.75rem;
+  font-size: 0.85em;
+}
+
+.llm-error {
+  color: #f87171;
+  font-size: 0.8em;
+  padding: 0 0.75rem 0.25rem;
+  margin: 0;
+}
+
+.llm-response-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 1px solid #2a2a2a;
+}
+
+.llm-response {
+  flex: 1;
+  overflow: auto;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8em;
+  font-family: 'Menlo', 'Consolas', monospace;
+  line-height: 1.5;
+  color: #ccc;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.llm-insert-btn {
+  flex-shrink: 0;
+  margin: 0.4rem 0.75rem;
+  font-size: 0.8em;
+  background: #1a3a5c;
+  border-color: #2563eb;
+  color: #93c5fd;
+}
+
+.llm-insert-btn:hover {
+  border-color: #60a5fa;
+}
+
+/* ── Output panel ─────────────────────────────────────────────────────────── */
+
+.output-panel {
+  height: 160px;
+  flex-shrink: 0;
+  border-top: 1px solid #333;
+  overflow: auto;
+  padding: 0.4rem 0.75rem;
+  background: #141414;
+  font-family: 'Menlo', 'Consolas', monospace;
+  font-size: 0.82em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.output-error {
+  color: #f87171;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.output-empty {
+  color: #555;
+  font-family: inherit;
+  font-style: italic;
+  justify-content: center;
+}
+
+.output-empty-msg {
+  color: #555;
+  font-style: italic;
+}
+
+.output-stream {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #d4d4d4;
+  line-height: 1.5;
+}
+
+.output-stderr {
+  color: #fca5a5;
+}
+
+/* ── Version history overlay ──────────────────────────────────────────────── */
+
+.version-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 3rem 1.5rem;
+  z-index: 100;
+}
+
+.version-panel {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  width: 360px;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.version-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #333;
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 0.1em 0.3em;
+  font-size: 1em;
+}
+
+.icon-btn:hover {
+  color: #fff;
+  border-color: transparent;
+}
+
+.version-loading {
+  color: #888;
+  padding: 1rem;
+  margin: 0;
+}
+
+.version-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.version-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 0.85em;
+}
+
+.version-tag {
+  font-family: 'Menlo', 'Consolas', monospace;
+  background: #333;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.version-meta {
+  flex: 1;
+  color: #888;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.version-hash {
+  font-family: 'Menlo', 'Consolas', monospace;
+  color: #555;
+  font-size: 0.9em;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -216,6 +551,29 @@ input:focus {
   input {
     background-color: #f9f9f9;
     border-color: #ccc;
+  }
+  .editor-header,
+  .version-panel,
+  .llm-panel {
+    background: #fafafa;
+    border-color: #ddd;
+  }
+  .editor-header {
+    border-bottom-color: #ddd;
+  }
+  .llm-textarea {
+    background: #fafafa;
+    color: #213547;
+    border-bottom-color: #ddd;
+  }
+  .llm-response {
+    color: #213547;
+  }
+  .output-panel {
+    background: #f5f5f5;
+  }
+  .output-stream {
+    color: #213547;
   }
   .catalog-table th {
     border-bottom-color: #ddd;
